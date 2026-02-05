@@ -1,3 +1,25 @@
 spring:
   application:
     name: expense-split-api
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yaml
+#  jackson:
+#    deserialization:
+#      fail-on-unknown-properties: true
+
+#
+#api:
+#  security:
+#    token:
+#      secret: ${TOKEN_SECRET}
+#      expiration-time: ${TOKEN_EXPIRATION_TIME:3600} # 1h in seconds
+#
+#  storage:
+#    minio:
+#      url: ${MINIO_URL}
+#      accessKey: ${MINIO_ACCESS_KEY}
+#      accessSecret: ${MINIO_ACCESS_SECRET}
