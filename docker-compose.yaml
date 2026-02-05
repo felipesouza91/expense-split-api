@@ -1,0 +1,10 @@
+services:
+
+  databse:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: marketplacedb
+      POSTGRES_USER: marketplace_user
+      POSTGRES_PASSWORD: marketplace_password
