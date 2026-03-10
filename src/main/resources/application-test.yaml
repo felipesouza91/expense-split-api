@@ -1,8 +1,6 @@
 spring:
   application:
     name: expense-split-api
-  jpa:
-    show-sql: true
   datasource:
     url: ${DATABASE_URL}
     username: ${DB_USERNAME}
@@ -14,16 +12,11 @@ spring:
       fail-on-unknown-properties: true
     date-format: yyyy-MM-dd HH:mm:ss
 
-
-#
-#api:
-#  security:
-#    token:
-#      secret: ${TOKEN_SECRET}
-#      expiration-time: ${TOKEN_EXPIRATION_TIME:3600} # 1h in seconds
-#
-#  storage:
-#    minio:
-#      url: ${MINIO_URL}
-#      accessKey: ${MINIO_ACCESS_KEY}
-#      accessSecret: ${MINIO_ACCESS_SECRET}
+  jpa:
+    show-sql: true
+api:
+  security:
+    token:
+      secret: ${TOKEN_SECRET:secret_key_valid}
+      token-expiration-time: ${TOKEN_EXPIRATION_TIME:3600} # 1h in seconds
+      refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME:43200} # 12h in seconds
