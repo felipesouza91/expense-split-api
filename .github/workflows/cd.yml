@@ -8,14 +8,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    
-    env:
-      TOKEN_SECRET: ${{ secrets.TOKEN_TEST }}
-      BUCKET_NAME: ${{ secrets.MINIO_BUCKET_TEST }}
-      MINIO_URL: ${{ secrets.MINIO_URL_TEST }}
-      MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESSEY_TEST }}
-      MINIO_ACCESS_SECRET:  ${{ secrets.MINIO_ACCESSSECRET_TEST }}
-      
+
     steps:
       - name: Chekout git files
         uses: actions/checkout@v3
@@ -87,5 +80,5 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{secrets.DOCKERHUB_USERNAME}}/marketspace-api:${{steps.getVersion.outputs.version}}
+          tags: ${{secrets.DOCKERHUB_USERNAME}}/expense-split-api:${{steps.getVersion.outputs.version}}
         
