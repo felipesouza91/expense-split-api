@@ -1,20 +1,30 @@
 package dev.fsantana.expensesplitapi.domain.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "activity_participants", uniqueConstraints = {
-    @UniqueConstraint(name = "uq:activity_participants.activity_id+activity_participants.user",
-                     columnNames = {"activity_id", "user_id"})
-})
+@Table(name = "activity_participants")
+//@Table(name = "activity_participants", uniqueConstraints = {
+//    @UniqueConstraint(name = "uq:activity_participants.activity_id+activity_participants.user",
+//                     columnNames = {"activity_id", "user_id"})
+//})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,20 +37,15 @@ public class ActivityParticipant {
     @EqualsAndHashCode.Include
     private UUID id;
 
-    @Column(name = "activity_id", nullable = false)
-    private UUID activityId;
-
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-
-    @Column(name = "joined_at")
-    private OffsetDateTime joinedAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "activity_id", insertable = false, updatable = false)
+    @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @CreationTimestamp
+    @Column(name = "joined_at")
+    private OffsetDateTime joinedAt;
 }
