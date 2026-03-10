@@ -1,3 +1,17 @@
 databaseChangeLog:
   - include:
       file: classpath:/db/migrations/001_enable_extensions.sql
+  - include:
+      file: classpath:/db/migrations/002_create_table_activities.sql
+  - include:
+      file: classpath:/db/migrations/003_create_table_users.sql
+  - include:
+      file: classpath:/db/migrations/004_create_table_activities_participants.sql
+  - include:
+      file: classpath:/db/migrations/005_create_table_expense_participants.sql
+  - include:
+      file: classpath:/db/migrations/006_create_table_expenses.sql
+  - include:
+      file: classpath:/db/migrations/007_create_table_expense_payments.sql
+  - include:
+      file: classpath:/db/migrations/008_create_contraints_in_expense_tables.sql
