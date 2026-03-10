@@ -1,4 +1,4 @@
-CREATE TABLE public.expenses (
+CREATE TABLE expenses (
     id uuid NOT NULL,
     name text NOT NULL,
     amount_in_cents int8 NOT NULL,
