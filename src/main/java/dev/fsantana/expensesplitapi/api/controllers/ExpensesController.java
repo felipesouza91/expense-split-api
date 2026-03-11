@@ -1,5 +1,6 @@
 package dev.fsantana.expensesplitapi.api.controllers;
 
+import dev.fsantana.expensesplitapi.api.controllers.docs.ExpenseControllerOpenApi;
 import dev.fsantana.expensesplitapi.api.requests.CreateExpenseRequest;
 import dev.fsantana.expensesplitapi.api.requests.MarkPaymentRequest;
 import dev.fsantana.expensesplitapi.api.requests.UpdateExpenseRequest;
@@ -32,11 +33,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/expenses")
 @RequiredArgsConstructor
-public class ExpensesController {
+public class ExpensesController implements ExpenseControllerOpenApi {
 
     private final ExpenseService expenseService;
     private final ExpenseMapper expenseMapper;
 
+    @Override
     @PostMapping("/{activityId}")
     public ResponseEntity<CreateExpenseResponse> createExpense(@PathVariable UUID activityId,@Valid @RequestBody CreateExpenseRequest request ) {
         Expense expense = expenseMapper.toModel(request, activityId);
@@ -45,6 +47,7 @@ public class ExpensesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createResponse);
     }
 
+    @Override
     @GetMapping("/{expenseId}")
     public ResponseEntity<ExpenseDetailResponse>  findByExpenseId(@PathVariable UUID expenseId){
         Expense expense = expenseService.loadById(expenseId);
@@ -52,15 +55,16 @@ public class ExpensesController {
         return ResponseEntity.ok(result);
     }
 
+    @Override
     @PutMapping("/{expenseId}")
     public ResponseEntity<CreateExpenseResponse> updateExpenseById(@PathVariable UUID expenseId,@Valid @RequestBody UpdateExpenseRequest request){
         Expense expense = expenseMapper.fromUpdateToModel(request, expenseId);
-        expense.setId(expenseId);
         Expense update = expenseService.update(expense);
         CreateExpenseResponse createResponse = expenseMapper.toCreateResponse(update);
         return ResponseEntity.ok(createResponse);
     }
 
+    @Override
     @PutMapping("/{expenseId}/payer")
     public ResponseEntity<UpdatePayerExpanseResponse> updatePayer(@PathVariable UUID expenseId,@Valid @RequestBody UpdatePayerExpenseRequest request){
         Expense expense = expenseMapper.fromPayerUpdateToModel(request, expenseId);
@@ -69,6 +73,7 @@ public class ExpensesController {
         return  ResponseEntity.ok(updatePayerExpanseResponse);
     }
 
+    @Override
     @PostMapping("/{expenseId}/payments")
     public ResponseEntity<UpdateExpensePaymentResponse> updatePayment(
             @PathVariable UUID expenseId,
@@ -78,6 +83,7 @@ public class ExpensesController {
         return  ResponseEntity.ok(updatePayerExpanseResponse);
     }
 
+    @Override
     @PutMapping("/{expenseId}/participants/{participantId}/payment/toggle")
     public ResponseEntity<ToggleParticipantPaymentResponse> toggleParticipantPayment(@PathVariable UUID expenseId,@PathVariable UUID participantId){
         ToggleParticipantPayment toggleParticipantPayment = expenseService.toggleExpenseParticipantPayment(expenseId, participantId);
@@ -85,6 +91,7 @@ public class ExpensesController {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @DeleteMapping("/{expenseId}")
     public ResponseEntity<Void> deleteExpense(@PathVariable UUID expenseId){
         expenseService.delete(expenseId);
