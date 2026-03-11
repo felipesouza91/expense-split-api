@@ -1,5 +1,6 @@
 package dev.fsantana.expensesplitapi.api.controllers;
 
+import dev.fsantana.expensesplitapi.api.controllers.docs.BalanceControllerOpenApi;
 import dev.fsantana.expensesplitapi.api.responses.BalanceBetweenUserResponse;
 import dev.fsantana.expensesplitapi.api.responses.UserGlobalBalanceResponse;
 import dev.fsantana.expensesplitapi.api.responses.balances.DetailedBalanceResponse;
@@ -20,11 +21,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/balance")
 @RequiredArgsConstructor
-public class BalanceController {
+public class BalanceController implements BalanceControllerOpenApi {
 
     private final BalanceService balanceService;
     private final BalanceMapper balanceMapper;
 
+    @Override
     @GetMapping("/between/{userIdFrom}/{userIdTo}")
     public ResponseEntity<BalanceBetweenUserResponse> getBalanceBetween(@PathVariable UUID userIdFrom, @PathVariable UUID userIdTo) {
         BalanceBetweenUser balanceBetweenUser = balanceService.balanceBetweenUser(userIdFrom, userIdTo);
@@ -32,6 +34,7 @@ public class BalanceController {
         return ResponseEntity.ok(balanceResponse);
     }
 
+    @Override
     @GetMapping("/users/{userId}/global")
     public ResponseEntity<UserGlobalBalanceResponse> getUserGlobalBalance(@PathVariable UUID userId) {
         UserGlobalBalance balance = balanceService.loadGlobalBalanceByUserId(userId);
@@ -39,6 +42,7 @@ public class BalanceController {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @GetMapping("/users/{userId}/detailed")
     public ResponseEntity<DetailedBalanceResponse> getDetailedBalanceByUser(@PathVariable UUID userId) {
         DetailedBalance detailedBalanceByUser = balanceService.getDetailedBalanceByUser(userId);
