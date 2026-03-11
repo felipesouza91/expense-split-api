@@ -1,5 +1,6 @@
 package dev.fsantana.expensesplitapi.api.controllers;
 
+import dev.fsantana.expensesplitapi.api.controllers.docs.UserControllerOpenApi;
 import dev.fsantana.expensesplitapi.api.requests.CreateUserRequest;
 import dev.fsantana.expensesplitapi.api.requests.SignInRequest;
 import dev.fsantana.expensesplitapi.api.responses.ActivityListResponse;
@@ -31,7 +32,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserControllerOpenApi {
 
     private final SessionService sessionService;
     private final UserService userService;
@@ -39,37 +40,42 @@ public class UserController {
     private final UserSessionService userSessionService;
     private final ActivityService  activityService;
 
+    @Override
     @PostMapping("/sign-up")
     public ResponseEntity<SignUpResponse> createUser(@Valid  @RequestBody CreateUserRequest request) {
         Auth user = sessionService.registerUser(userMapper.toModel(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toDTO(user));
     }
 
+    @Override
     @PostMapping("/sign-in")
     public ResponseEntity<SignUpResponse> authenticateUser(@Valid @RequestBody SignInRequest request) {
         Auth user = sessionService.login(request.getEmail(), request.getPassword());
         return ResponseEntity.ok(userMapper.toDTO(user));
     }
 
-
+    @Override
     @GetMapping("/me")
     public ResponseEntity<UserResponse> aboutUser() {
         User user = userSessionService.getCurrentUser();
         return ResponseEntity.ok(userMapper.toUserResponseDTO(user));
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<UsersResponse> findAll() {
         Set<User> result = userService.findAll();
         return ResponseEntity.ok(userMapper.toUsersResponse(result));
     }
 
+    @Override
     @GetMapping("/me/statistics")
     public ResponseEntity<StatisticsResponse>  getStatistics() {
         Statistics statistics = userService.loadStatisticsByUser(userSessionService.getCurrentUser().getId());
         return ResponseEntity.ok(userMapper.toStatisticsDTO(statistics));
     }
 
+    @Override
     @GetMapping("/me/activities")
     public ResponseEntity<ActivityListResponse> getUsersActivity() {
         Set<ActivityParticipant> participants = activityService.findCurrentUserActivities();
