@@ -1,5 +1,6 @@
 package dev.fsantana.expensesplitapi.api.controllers;
 
+import dev.fsantana.expensesplitapi.api.controllers.docs.ActivitiesControllerOpenApi;
 import dev.fsantana.expensesplitapi.api.requests.ActivityRequest;
 import dev.fsantana.expensesplitapi.api.requests.AddParticipantsRequest;
 import dev.fsantana.expensesplitapi.api.responses.ActivityBalanceResponse;
@@ -39,7 +40,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/activities")
 @RequiredArgsConstructor
-public class ActivitiesController {
+public class ActivitiesController implements ActivitiesControllerOpenApi {
 
     private final ActivityService activityService;
     private final UserSessionService userSessionService;
@@ -47,6 +48,7 @@ public class ActivitiesController {
     private final ExpenseMapper expenseMapper;
     private final ExpenseService expenseService;
 
+    @Override
     @PostMapping
     public ResponseEntity<ActivityResumeResponse> createActivity(@Valid  @RequestBody ActivityRequest request) {
         Activity activity = activityMapper.toModel(request);
@@ -54,6 +56,7 @@ public class ActivitiesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(activityMapper.toResume(saved));
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<ActivityResumeResponse> updateActivity(@PathVariable UUID id, @Valid @RequestBody ActivityRequest request) {
         Activity activity = activityMapper.toModel(request);
@@ -61,6 +64,7 @@ public class ActivitiesController {
         return ResponseEntity.ok(activityMapper.toResume(updated));
     }
 
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<ActivityResponse> getById(@PathVariable UUID id) {
         User user = userSessionService.getCurrentUser();
@@ -69,12 +73,14 @@ public class ActivitiesController {
         return ResponseEntity.ok(result);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
         activityService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @GetMapping("/{activityId}/balance")
     public ResponseEntity<ActivityBalanceResponse> getBalance(@PathVariable UUID activityId) {
         ActivityBalance balanceById = activityService.getBalanceByActivityId(activityId);
@@ -82,6 +88,7 @@ public class ActivitiesController {
         return ResponseEntity.ok(balanceResponse);
     }
 
+    @Override
     @PostMapping("/{activityId}/participants")
     public ResponseEntity<AddParticipantsResponse> addParticipants(@PathVariable UUID activityId, @Valid @RequestBody AddParticipantsRequest addParticipantsRequest) {
         List<ActivityParticipant> list = activityMapper.fromAddParticipantsRequestToActivityParticipants(addParticipantsRequest);
@@ -90,6 +97,7 @@ public class ActivitiesController {
         return  ResponseEntity.ok(expenseListItemResponses);
     }
 
+    @Override
     @GetMapping("/{activityId}/participants")
     public ResponseEntity<ActivityParticipantsResponse> listParticipants(@PathVariable UUID activityId) {
         List<ActivityParticipant> participants = activityService.findParticipantsByActivityId(activityId);
@@ -97,6 +105,7 @@ public class ActivitiesController {
         return ResponseEntity.ok(activityParticipantsResponse);
     }
 
+    @Override
     @GetMapping("/{activityId}/expenses")
     public ResponseEntity<ExpenseListResponse> getExpensesByActivityId(@PathVariable UUID activityId) {
         List<Expense> expenses = expenseService.listByActivityId(activityId);
@@ -104,6 +113,7 @@ public class ActivitiesController {
         return  ResponseEntity.ok(new ExpenseListResponse(expenseListItemResponses));
     }
 
+    @Override
     @DeleteMapping("/{activityId}/participants/{participantId}")
     public ResponseEntity<Void> removeParticipant(@PathVariable UUID activityId, @PathVariable UUID participantId) {
         activityService.deleteParticipantByActivityId(activityId, participantId);
