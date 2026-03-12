@@ -19,7 +19,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Expense")
+@Tag(name = "Users")
 @ApiResponse(responseCode = "401", description = "Unauthorized",
         content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
 @ApiResponse(responseCode = "500", description = "Server error",
