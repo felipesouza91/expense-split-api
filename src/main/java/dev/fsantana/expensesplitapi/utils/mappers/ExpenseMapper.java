@@ -51,7 +51,7 @@ public interface ExpenseMapper {
     @Mapping(source = "request.title", target = "name")
     @Mapping(source = "request.payerId", target = "payer.id")
     @Mapping(source = "request.participantsIds", target = "expenseParticipants")
-    @Mapping(source = "activityId", target = "activity.id")
+    @Mapping(source = "activityId", target = "id")
     Expense fromUpdateToModel(UpdateExpenseRequest request, UUID activityId);
 
     default Set<ExpenseParticipant> fromUUID(Set<UUID> uuid) {
