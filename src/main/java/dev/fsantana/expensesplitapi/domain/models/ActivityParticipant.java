@@ -21,10 +21,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "activity_participants")
-//@Table(name = "activity_participants", uniqueConstraints = {
-//    @UniqueConstraint(name = "uq:activity_participants.activity_id+activity_participants.user",
-//                     columnNames = {"activity_id", "user_id"})
-//})
 @Getter
 @Setter
 @NoArgsConstructor
