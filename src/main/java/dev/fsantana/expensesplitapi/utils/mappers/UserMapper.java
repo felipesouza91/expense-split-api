@@ -60,7 +60,7 @@ public interface UserMapper {
                            .sum();
 
                    Set<ParticipantResume> participantInfos = activity.getParticipants().stream()
-                           .map(p -> new ParticipantResume(p.getUser().getId(), p.getUser().getName(), p.getUser().getEmail(), null))
+                           .map(p -> new ParticipantResume(p.getUser().getId(), p.getUser().getName(), p.getUser().getEmail(), p.getJoinedAt()))
                            .collect(Collectors.toSet());
 
                    return new ActivityUserResponse(
