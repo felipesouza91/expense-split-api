@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: expense-split-api
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yaml
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+
+  jpa:
+    show-sql: true
+api:
+  security:
+    allowedOrigins: ${ALLOWED_ORIGINS:*}
+    token:
+      secret: ${TOKEN_SECRET:secret_key_valid}
+      token-expiration-time: ${TOKEN_EXPIRATION_TIME:3600} # 1h in seconds
+      refresh-token-expiration-time: ${REFRESH_TOKEN_EXPIRATION_TIME:43200} # 12h in seconds

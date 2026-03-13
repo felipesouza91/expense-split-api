@@ -1,0 +1,10 @@
+services:
+
+  databse:
+    image: postgres:15
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: expense_split_api
+      POSTGRES_USER: split_user
+      POSTGRES_PASSWORD: split_password
