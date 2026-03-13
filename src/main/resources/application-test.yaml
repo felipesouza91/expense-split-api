@@ -16,6 +16,7 @@ spring:
     show-sql: true
 api:
   security:
+    allowedOrigins: ${ALLOWED_ORIGINS:*}
     token:
       secret: ${TOKEN_SECRET:secret_key_valid}
       token-expiration-time: ${TOKEN_EXPIRATION_TIME:3600} # 1h in seconds
